@@ -4,9 +4,6 @@ import java.util.Objects;
 import java.util.stream.Stream;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
-import org.springframework.data.domain.PageRequest;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.jpa.domain.Specification;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -14,7 +11,6 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
-import seeds.StartupInvestor.domain.MainPost;
 import seeds.StartupInvestor.dto.response.RespMainPost;
 import seeds.StartupInvestor.repository.MainPostRepo;
 import seeds.StartupInvestor.service.MainService;
@@ -25,7 +21,6 @@ import seeds.StartupInvestor.service.MainService;
 public class MainController {
 
     private final MainService mainService;
-    private final MainPostRepo mainPostRepo;
 
     @GetMapping()
     public ResponseEntity<Page<RespMainPost>> getAllPosts(
@@ -76,10 +71,10 @@ public class MainController {
         );
     }
 
-    @GetMapping("/{postId}")
-    public ResponseEntity<?> getDetailPost(@PathVariable("postId") Long postId) {
-        return ResponseEntity.status(HttpStatus.OK).body(null);
-    }
+//    @GetMapping("/{postId}")
+//    public ResponseEntity<?> getDetailPost(@PathVariable("postId") Long postId) {
+//        return ResponseEntity.status(HttpStatus.OK).body(null);
+//    }
 
     //user가 있다는 가정
 

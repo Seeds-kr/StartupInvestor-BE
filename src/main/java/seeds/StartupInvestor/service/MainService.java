@@ -22,9 +22,7 @@ import seeds.StartupInvestor.repository.MainPostRepo;
 public class MainService {
     private static final int PAGE_SIZE = 20;
 
-    private final CompanyRepo companyRepo;
     private final MainPostRepo mainPostRepo;
-    private final MainPostReplyRepo mainPostReplyRepo;
 
     // main post crud
     public Page<RespMainPost> allPost(int pageNumber) {
@@ -86,7 +84,7 @@ public class MainService {
         return new PageImpl<>(respMainPostsWithParams, pageable, mainPostsPage.getTotalElements());
     }
 
-    private class MainPostSpecifications {
+    private static class MainPostSpecifications {
 
         private static Specification<MainPost> hasInstitutionType(String institutionType) {
             return (root, query, criteriaBuilder) -> criteriaBuilder.equal(root.get("institutionType"), institutionType);
