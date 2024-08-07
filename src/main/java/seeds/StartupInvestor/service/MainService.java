@@ -12,8 +12,6 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seeds.StartupInvestor.domain.MainPost;
 import seeds.StartupInvestor.dto.response.RespMainPost;
-import seeds.StartupInvestor.repository.CompanyRepo;
-import seeds.StartupInvestor.repository.MainPostReplyRepo;
 import seeds.StartupInvestor.repository.MainPostRepo;
 
 @Service
