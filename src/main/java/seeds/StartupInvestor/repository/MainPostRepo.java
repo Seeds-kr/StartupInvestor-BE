@@ -1,10 +1,12 @@
 package seeds.StartupInvestor.repository;
 
 import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.data.jpa.repository.JpaSpecificationExecutor;
 import org.springframework.stereotype.Repository;
 import seeds.StartupInvestor.domain.MainPost;
 
 @Repository
-public interface MainPostRepo extends JpaRepository<MainPost, Long> {
+public interface MainPostRepo extends JpaRepository<MainPost, Long>,
+    JpaSpecificationExecutor<MainPost> {
 
 }
