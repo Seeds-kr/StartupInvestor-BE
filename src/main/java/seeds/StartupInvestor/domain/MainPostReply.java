@@ -1,5 +1,6 @@
 package seeds.StartupInvestor.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -25,10 +26,12 @@ public class MainPostReply {
     @Column(name = "main_post_reply_id", nullable = false)
     private Long mainPostReplyId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "main_post_id", nullable = false)
     private MainPost mainPost;

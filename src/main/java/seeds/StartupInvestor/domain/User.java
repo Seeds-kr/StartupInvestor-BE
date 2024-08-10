@@ -1,5 +1,6 @@
 package seeds.StartupInvestor.domain;
 
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -26,6 +27,7 @@ public class User {
     @Column(name = "user_id")
     private Long userId;
 
+    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_type_id", nullable = false)
     private UserType userType;
