@@ -37,8 +37,8 @@ public class dummy {
     @Transactional
     public void initDataForTest() {
         settingUserType();
-        UserType userTypeAdmin = userTypeRepo.findById(1L).get();
-        UserType userTypeCompany = userTypeRepo.findById(3L).get();
+        UserType userTypeAdmin = userTypeRepo.findById(1L).orElseThrow(NullPointerException::new);
+        UserType userTypeCompany = userTypeRepo.findById(3L).orElseThrow(NullPointerException::new);
 
 
         User user1 = settingAdminUser(userTypeAdmin);
@@ -111,8 +111,8 @@ public class dummy {
             long lastest_series_category = (i + 1) / 5 + 1;
             long goal_series_cateogry = (i + 1) / 5 + 2;
 
-            SeriesCategory seriesCategory1 = seriesCategoryRepo.findById(lastest_series_category).get();
-            SeriesCategory seriesCategory2 = seriesCategoryRepo.findById(goal_series_cateogry).get();
+            SeriesCategory seriesCategory1 = seriesCategoryRepo.findById(lastest_series_category).orElseThrow(NullPointerException::new);
+            SeriesCategory seriesCategory2 = seriesCategoryRepo.findById(goal_series_cateogry).orElseThrow(NullPointerException::new);
 
 
             // Company 객체 생성
@@ -195,7 +195,7 @@ public class dummy {
 
         userRepo.save(user);
 
-        return userRepo.findById(1L).get();
+        return userRepo.findById(1L).orElseThrow(NullPointerException::new);
     }
 
     private UserType settingUserType() {
@@ -209,6 +209,6 @@ public class dummy {
         userTypeRepo.save(userType3);
         userTypeRepo.save(userType4);
 
-        return userTypeRepo.findById(1L).get();
+        return userTypeRepo.findById(1L).orElseThrow(NullPointerException::new);
     }
 }

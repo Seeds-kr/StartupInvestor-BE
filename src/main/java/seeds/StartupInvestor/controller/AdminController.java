@@ -23,8 +23,6 @@ public class AdminController {
     private final CompanyRepo companyRepo;
     private final UserRepo userRepo;
     private final MainPostRepo mainPostRepo;
-    private final CompanyTechTypeRepo companyTechTypeRepo;
-    private final CompanyBusinessTypeRepo companyBusinessTypeRepo;
 
     @GetMapping("/post")
     public ResponseEntity<List<MainPost>> getAllPosts() {
