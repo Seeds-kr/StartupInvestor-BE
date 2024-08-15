@@ -14,7 +14,7 @@ public class BusinessType {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     @Column(name = "business_type_id")
-    private Long id;
+    private Long businessTypeId;
 
     @Column(name = "main_category", nullable = false, length = 50)
     private String mainCategory;

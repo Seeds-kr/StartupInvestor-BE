@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RestController;
 import seeds.StartupInvestor.domain.Company;
 import seeds.StartupInvestor.domain.MainPost;
 import seeds.StartupInvestor.domain.User;
+import seeds.StartupInvestor.repository.CompanyBusinessTypeRepo;
 import seeds.StartupInvestor.repository.CompanyRepo;
+import seeds.StartupInvestor.repository.CompanyTechTypeRepo;
 import seeds.StartupInvestor.repository.MainPostRepo;
 import seeds.StartupInvestor.repository.UserRepo;
 
@@ -21,6 +23,8 @@ public class AdminController {
     private final CompanyRepo companyRepo;
     private final UserRepo userRepo;
     private final MainPostRepo mainPostRepo;
+    private final CompanyTechTypeRepo companyTechTypeRepo;
+    private final CompanyBusinessTypeRepo companyBusinessTypeRepo;
 
     @GetMapping("/post")
     public ResponseEntity<List<MainPost>> getAllPosts() {
@@ -39,5 +43,4 @@ public class AdminController {
         List<User> all = userRepo.findAll();
         return ResponseEntity.ok(all);
     }
-
 }

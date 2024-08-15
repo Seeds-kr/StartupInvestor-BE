@@ -19,6 +19,7 @@ import seeds.StartupInvestor.repository.*;
 @Slf4j
 @Component
 @RequiredArgsConstructor
+@Transactional
 @Profile({"dev", "test"})
 public class dummy {
 

@@ -22,7 +22,7 @@ import seeds.StartupInvestor.repository.MainPostRepo;
 @Service
 @Transactional
 @RequiredArgsConstructor
-public class MainService {
+public class MainPostService {
 
     private static final int PAGE_SIZE = 20;
 
@@ -39,10 +39,8 @@ public class MainService {
 
         Pageable pageable = PageRequest.of(pageNumber, PAGE_SIZE);
 
-        // Fetch paginated data from repository
         Page<MainPost> pagedMainPosts = mainPostRepo.findAll(pageable);
 
-        // Transform MainPost entities into RespMainPost DTOs
         return getRespMainPosts(pagedMainPosts, pageable);
     }
 
@@ -116,7 +114,13 @@ public class MainService {
             sql.append("AND (LOWER(mp.title) LIKE :query OR LOWER(mp.description) LIKE :query) ");
         }
 
-        Query jpaQuery = entityManager.createNativeQuery(sql.toString(), MainPost.class);
+        Query jpaQuery = null;
+        try{
+            jpaQuery = entityManager.createNativeQuery(sql.toString(), MainPost.class);
+
+        }catch (NullPointerException e){
+            throw new BusinessException(ErrorCode.POST_NOT_FOUND_WITH_PARAMETER);
+        }
 
         if (mainBusinessCategory != null) {
             jpaQuery.setParameter("mainBusinessCategory", mainBusinessCategory);
@@ -145,7 +149,11 @@ public class MainService {
         jpaQuery.setFirstResult(page * PAGE_SIZE);
         jpaQuery.setMaxResults(PAGE_SIZE);
 
+
         List<MainPost> mainPostsPage = jpaQuery.getResultList();
+        if(mainPostsPage.isEmpty()){
+            throw new BusinessException(ErrorCode.POST_NOT_FOUND_WITH_PARAMETER);
+        }
 
         List<RespMainPost> respMainPostsWithParams = mainPostsPage.stream().map(
             mainPost -> new RespMainPost(

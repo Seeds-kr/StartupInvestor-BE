@@ -6,7 +6,7 @@ spring:
     driver-class-name: com.mysql.cj.jdbc.Driver
     url: jdbc:mysql://localhost:3306/startupinvestor?characterEncoding=UTF-8&serverTimezone=UTC
     username: root
-    password: 12345678
+    password: 7663200
 
   jpa:
     properties:
@@ -19,3 +19,9 @@ spring:
     hibernate:
       ddl-auto: create-drop                  # ddl-auto 설정
     open-in-view: false                 # Open session in view 패턴 사용 안 함
+
+logging:
+  level:
+    root: debug                        # 전체 애플리케이션의 로그 레벨을 DEBUG로 설정
+    org.hibernate.SQL: debug           # Hibernate SQL 로그 레벨을 DEBUG로 설정
+    org.hibernate.type: trace          # Hibernate SQL 파라미터 로그 레벨을 TRACE로 설정 (SQL 쿼리의 파라미터 값을 함께 출력)
