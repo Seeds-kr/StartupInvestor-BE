@@ -1,6 +1,5 @@
 package seeds.StartupInvestor.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -15,33 +14,22 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "main_post_reply")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MainPostReply {
+@Table(name = "investor_member")
+public class InvestorMember {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "main_post_reply_id", nullable = false)
-    private Long mainPostReplyId;
+    @Column(name = "investor_member_id")
+    private Long investorMemberId;
 
-    @JsonIgnore
+    @ManyToOne(fetch = FetchType.LAZY, optional = false)
+    @JoinColumn(name = "investor_id", nullable = false)
+    private Investor investor;
+
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
-
-    @JsonIgnore
-    @ManyToOne(fetch = FetchType.LAZY, optional = false)
-    @JoinColumn(name = "main_post_id", nullable = false)
-    private MainPost mainPost;
-
-    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
-    private String content;
-
-    public MainPostReply(User user, MainPost mainPost, String content) {
-        this.user = user;
-        this.mainPost = mainPost;
-        this.content = content;
-    }
 }

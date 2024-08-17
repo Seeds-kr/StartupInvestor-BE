@@ -29,6 +29,7 @@ public enum ErrorCode {
     POST_USER_MISMATCH(HttpStatus.BAD_REQUEST, "P003", "게시물이 사용자와 일치하지 않습니다."),
     INVALID_PARAMETER(HttpStatus.BAD_REQUEST,"P004","잘못된 파라미터 값이 존재합니다."),
     POST_NOT_FOUND_WITH_PARAMETER(HttpStatus.BAD_REQUEST,"POO5","조건에 맞는 게시물을 찾을 수 없습니다."),
+    CONTENT_IS_EMPTY(HttpStatus.BAD_REQUEST, "P006","공백의 내용은 입력될 수 없습니다."),
 
     // JWT
     JWT_DECODE_ERROR(HttpStatus.BAD_REQUEST, "J001", "JWT 토큰 형식이 잘못되었습니다."),

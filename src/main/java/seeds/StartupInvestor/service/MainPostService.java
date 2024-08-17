@@ -1,10 +1,16 @@
 package seeds.StartupInvestor.service;
 
+import static seeds.StartupInvestor.global.exception.ErrorCode.CONTENT_IS_EMPTY;
+import static seeds.StartupInvestor.global.exception.ErrorCode.POST_NOT_FOUND;
+import static seeds.StartupInvestor.global.exception.ErrorCode.USER_NOT_FOUND;
+
 import jakarta.persistence.EntityManager;
 import jakarta.persistence.PersistenceContext;
 import jakarta.persistence.Query;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
+import java.util.Optional;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import org.springframework.data.domain.Page;
@@ -14,10 +20,19 @@ import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 import seeds.StartupInvestor.domain.MainPost;
+import seeds.StartupInvestor.domain.MainPostBookmark;
+import seeds.StartupInvestor.domain.MainPostLike;
+import seeds.StartupInvestor.domain.MainPostReply;
+import seeds.StartupInvestor.domain.User;
+import seeds.StartupInvestor.dto.request.ReqMainPostReplyDto;
 import seeds.StartupInvestor.dto.response.RespMainPost;
 import seeds.StartupInvestor.global.exception.BusinessException;
 import seeds.StartupInvestor.global.exception.ErrorCode;
+import seeds.StartupInvestor.repository.MainPostBookmarkRepo;
+import seeds.StartupInvestor.repository.MainPostLikeRepo;
+import seeds.StartupInvestor.repository.MainPostReplyRepo;
 import seeds.StartupInvestor.repository.MainPostRepo;
+import seeds.StartupInvestor.repository.UserRepo;
 
 @Service
 @Transactional
@@ -27,6 +42,10 @@ public class MainPostService {
     private static final int PAGE_SIZE = 20;
 
     private final MainPostRepo mainPostRepo;
+    private final MainPostBookmarkRepo mainPostBookmarkRepo;
+    private final MainPostLikeRepo mainPostLikeRepo;
+    private final MainPostReplyRepo mainPostReplyRepo;
+    private final UserRepo userRepo;
 
     @PersistenceContext
     private EntityManager entityManager;
@@ -42,6 +61,58 @@ public class MainPostService {
         Page<MainPost> pagedMainPosts = mainPostRepo.findAll(pageable);
 
         return getRespMainPosts(pagedMainPosts, pageable);
+    }
+
+    public void doMainPostBookmark(Long userId, Long postId) {
+        getUserAndMainPost result = getGetUserAndMainPost(userId, postId);
+
+        Optional<MainPostBookmark> existingBookmark = mainPostBookmarkRepo.findByUserAndMainPost(
+            result.user(), result.post());
+
+        if (existingBookmark.isPresent()) {
+            mainPostBookmarkRepo.delete(existingBookmark.get());
+        } else {
+            MainPostBookmark bookmark = new MainPostBookmark(
+                result.user(),
+                result.post(),
+                new Date()
+            );
+            mainPostBookmarkRepo.save(bookmark);
+        }
+    }
+
+    public void doMainPostLike(Long userId, Long postId) {
+        getUserAndMainPost result = getGetUserAndMainPost(userId, postId);
+
+        Optional<MainPostLike> existingLike = mainPostLikeRepo.findByUserAndMainPost(result.user, result.post);
+
+        if (existingLike.isPresent()) {
+            mainPostLikeRepo.delete(existingLike.get());
+        } else {
+            MainPostLike like = new MainPostLike(
+                result.user,
+                result.post,
+                new Date()
+            );
+            mainPostLikeRepo.save(like);
+        }
+    }
+
+    public void addCompanyMainPostReply(Long userId, Long postId, ReqMainPostReplyDto mainPostReplyDto) {
+
+        getUserAndMainPost result = getGetUserAndMainPost(userId, postId);
+
+        if(mainPostReplyDto.getContent().isEmpty()){
+            throw new BusinessException(CONTENT_IS_EMPTY);
+        }
+
+        MainPostReply reply = new MainPostReply(
+            result.user,
+            result.post,
+            mainPostReplyDto.getContent()
+        );
+
+        mainPostReplyRepo.save(reply);
     }
 
 
@@ -115,10 +186,10 @@ public class MainPostService {
         }
 
         Query jpaQuery = null;
-        try{
+        try {
             jpaQuery = entityManager.createNativeQuery(sql.toString(), MainPost.class);
 
-        }catch (NullPointerException e){
+        } catch (NullPointerException e) {
             throw new BusinessException(ErrorCode.POST_NOT_FOUND_WITH_PARAMETER);
         }
 
@@ -149,9 +220,8 @@ public class MainPostService {
         jpaQuery.setFirstResult(page * PAGE_SIZE);
         jpaQuery.setMaxResults(PAGE_SIZE);
 
-
         List<MainPost> mainPostsPage = jpaQuery.getResultList();
-        if(mainPostsPage.isEmpty()){
+        if (mainPostsPage.isEmpty()) {
             throw new BusinessException(ErrorCode.POST_NOT_FOUND_WITH_PARAMETER);
         }
 
@@ -186,5 +256,17 @@ public class MainPostService {
         ));
 
         return new PageImpl<>(respMainPostsWithParams, pageable, mainPostsPage.getTotalElements());
+    }
+
+    private getUserAndMainPost getGetUserAndMainPost(Long userId, Long postId) {
+        User user = userRepo.findById(userId)
+            .orElseThrow(() -> new BusinessException(USER_NOT_FOUND));
+        MainPost post = mainPostRepo.findById(postId)
+            .orElseThrow(() -> new BusinessException(POST_NOT_FOUND));
+        return new getUserAndMainPost(user, post);
+    }
+
+    private record getUserAndMainPost(User user, MainPost post) {
+
     }
 }

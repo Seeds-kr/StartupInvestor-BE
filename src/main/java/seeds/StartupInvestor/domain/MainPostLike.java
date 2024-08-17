@@ -1,6 +1,5 @@
 package seeds.StartupInvestor.domain;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
@@ -10,38 +9,40 @@ import jakarta.persistence.Id;
 import jakarta.persistence.JoinColumn;
 import jakarta.persistence.ManyToOne;
 import jakarta.persistence.Table;
+import jakarta.persistence.Temporal;
+import jakarta.persistence.TemporalType;
+import java.util.Date;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 
 @Entity
-@Table(name = "main_post_reply")
 @Getter
 @NoArgsConstructor
 @AllArgsConstructor
-public class MainPostReply {
+@Table(name = "main_post_like")
+public class MainPostLike {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "main_post_reply_id", nullable = false)
-    private Long mainPostReplyId;
+    @Column(name = "main_post_like_id")
+    private Long mainPostLikeId;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "user_id", nullable = false)
     private User user;
 
-    @JsonIgnore
     @ManyToOne(fetch = FetchType.LAZY, optional = false)
     @JoinColumn(name = "main_post_id", nullable = false)
     private MainPost mainPost;
 
-    @Column(name = "content", columnDefinition = "TEXT", nullable = false)
-    private String content;
+    @Column(name = "created_at", nullable = false)
+    @Temporal(TemporalType.TIMESTAMP)
+    private Date createdAt;
 
-    public MainPostReply(User user, MainPost mainPost, String content) {
+    public MainPostLike(User user, MainPost mainPost, Date createdAt) {
         this.user = user;
         this.mainPost = mainPost;
-        this.content = content;
+        this.createdAt = createdAt;
     }
 }

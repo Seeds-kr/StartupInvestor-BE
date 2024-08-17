@@ -8,18 +8,19 @@ import org.springframework.web.bind.annotation.RestController;
 import seeds.StartupInvestor.domain.Company;
 import seeds.StartupInvestor.domain.MainPost;
 import seeds.StartupInvestor.domain.User;
-import seeds.StartupInvestor.repository.CompanyBusinessTypeRepo;
 import seeds.StartupInvestor.repository.CompanyRepo;
-import seeds.StartupInvestor.repository.CompanyTechTypeRepo;
 import seeds.StartupInvestor.repository.MainPostRepo;
 import seeds.StartupInvestor.repository.UserRepo;
 
 import java.util.List;
 
+/**
+ * 테스트용 컨트롤러 이므로 실제 배포시 사용되지 않는 파일입니다.
+ */
 @RestController
 @RequestMapping("/api/admin")
 @RequiredArgsConstructor
-public class AdminController {
+public class TestController {
     private final CompanyRepo companyRepo;
     private final UserRepo userRepo;
     private final MainPostRepo mainPostRepo;

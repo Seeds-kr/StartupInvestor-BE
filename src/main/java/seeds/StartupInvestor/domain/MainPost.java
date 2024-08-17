@@ -51,4 +51,24 @@ public class MainPost {
         this.bookmarkCnt = 0;
         this.likeCnt = 0;
     }
+
+    public void increaseBookmarkCnt() {
+        bookmarkCnt++;
+    }
+
+    public void decreaseBookmarkCnt() {
+        bookmarkCnt--;
+    }
+
+    public void increaseViewCnt() {
+        viewCnt++;
+    }
+
+    public void increaseLikeCnt() {
+        likeCnt++;
+    }
+
+    public void decreaseLikeCnt() {
+        likeCnt--;
+    }
 }
